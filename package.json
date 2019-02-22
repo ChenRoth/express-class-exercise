@@ -1,0 +1,11 @@
+{
+  "name": "product-api",
+  "version": "1.0.0",
+  "description": "an API/server for a product store backoffice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
