@@ -30,6 +30,9 @@ const database = {
     },
 }
 
+// this middleware will put the message body in request.body (if available)
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('hello');
 });
@@ -39,6 +42,7 @@ app.get('/products', (req, res) => {
     res.send(ids.map(id => {
         const product = database[id];
         return {
+            id: product.id,
             price: product.price,
             name: product.name,
             image: product.image,
@@ -54,6 +58,28 @@ app.get('/products/:productId', (req, res) => {
     const id = req.params.productId;
     const product = database[id];
     res.send(product);
+});
+
+app.post('/products', (req, res) => {
+    const newProduct = req.body;
+    
+    // check if the new product has a name
+    if (!newProduct.name) {
+        // if the product doesn't have a name, return error 400
+        res.status(400);
+        res.send('product doesn\'t have a name');
+        // remember to end the app.post function!!!
+        return;
+    }
+
+    // generate a new id for the new product
+    const id = 'a' + Date.now();
+
+    // force the new product to have the generated id
+    // so even if the client put an id, we overwrite it
+    newProduct.id = id;
+    database[id] = newProduct;
+    res.send('product added successfully');
 });
 
 app.listen(PORT, () => {
