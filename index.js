@@ -34,6 +34,18 @@ app.get('/', (req, res) => {
     res.send('hello');
 });
 
+app.get('/products', (req, res) => {
+    const ids = Object.keys(database); // ['a123-if', 'jk982', 'zmxnd']
+    res.send(ids.map(id => {
+        const product = database[id];
+        return {
+            price: product.price,
+            name: product.name,
+            image: product.image,
+        };
+    }));
+});
+
 app.listen(PORT, () => {
     console.log(`server is now up at http://localhost:${PORT}`);
 });
