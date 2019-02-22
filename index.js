@@ -111,6 +111,11 @@ app.put('/products/:productId', (req, res) => {
     res.send('product updated succesfully');
 });
 
+app.delete('/products/:productId', (req, res) => {
+    const id = req.params.productId;
+    delete database[id];
+    res.send('product deleted successfully');
+});
 
 app.listen(PORT, () => {
     console.log(`server is now up at http://localhost:${PORT}`);
