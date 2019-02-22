@@ -46,6 +46,16 @@ app.get('/products', (req, res) => {
     }));
 });
 
+// we choose a param name we want, for example ':productId'
+app.get('/products/:productId', (req, res) => {
+    // now we can access the variable part of the URL through req.params.productId
+    // e.g. if the client goes to /product/a-product-id,
+    // req.params.productId === 'a-product-id'    
+    const id = req.params.productId;
+    const product = database[id];
+    res.send(product);
+});
+
 app.listen(PORT, () => {
     console.log(`server is now up at http://localhost:${PORT}`);
 });
