@@ -82,6 +82,36 @@ app.post('/products', (req, res) => {
     res.send('product added successfully');
 });
 
+// we choose a param name we want, for example ':productId'
+app.put('/products/:productId', (req, res) => {
+    // now we can access the variable part of the URL through req.params.productId
+    // e.g. if the client goes to /product/a-product-id,
+    // req.params.productId === 'a-product-id'    
+    const id = req.params.productId;
+    const changes = req.body;
+    const existingProduct = database[id];
+
+    // check if product even exists
+    if (!existingProduct) {
+        res.status(400);
+        res.send(`product ${id} doesn\'t exist!`);
+        return;
+    }
+
+    // if we have conflicting fields in 'existingProduct' and 'changes',
+    // updatedProduct will get the field value from 'changes'
+    const updatedProduct = Object.assign(existingProduct, changes)
+
+    // we overwrite with the original id in case changes include 'id'
+    updatedProduct.id = existingProduct.id;
+
+    // update the database
+    database[id] = updatedProduct;
+
+    res.send('product updated succesfully');
+});
+
+
 app.listen(PORT, () => {
     console.log(`server is now up at http://localhost:${PORT}`);
 });
